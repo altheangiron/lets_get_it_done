@@ -14,16 +14,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   DateTime today = DateTime.now();
 
-  /* stores the tasks under respective date
-  Map<DateTime, List<Task>> events = {};
-  final TextEditingController _taskController = TextEditingController();*/
-
   void _onDaySelected(DateTime day, DateTime focusedDay) {
-    setState(() {
-      today = day;
-    });
+      setState(() {
+       today = day;
+      });
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,28 +32,9 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ),
       ),
-
-      /*button action
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showDialog(context: context, builder: (context) {
-            return const AlertDialog(
-              scrollable: true,
-              title: Text("event name"),
-              content: Padding(
-                padding: EdgeInsets.all(8),
-                //child: TextField(),
-              )
-            );
-          });
-        },
-        child: const Icon(Icons.add),
-      ),*/
-
-
       body: Column (
         children: [
-          TableCalendar(
+          TableCalendar (
             headerStyle: const HeaderStyle(
             formatButtonVisible: false,
             titleCentered: true
@@ -79,7 +56,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 shape: BoxShape.circle,
               ),
             ),
-            availableGestures: AvailableGestures.all,
             selectedDayPredicate: (day) => isSameDay(day, today),
             focusedDay: today,
             firstDay: DateTime.utc(2024, 3, 14),
@@ -87,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
             onDaySelected: _onDaySelected,
             calendarFormat: CalendarFormat.week,
           ),
-        ]
+        ]  
       ),
     );
   }
