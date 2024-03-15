@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:lets_get_it_done/task.dart';
 
-
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
   
@@ -55,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       body: Column (
-        children: [
+        children: <Widget>[
           TableCalendar (
             headerStyle: const HeaderStyle(
             formatButtonVisible: false,
@@ -91,56 +89,79 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(
             height: 10,
           ),
-          Container(
+          
+          /*Container (
             child: const Text('To-Do:',
             style: TextStyle(
               color: Color(0xffcebb9c),
               fontSize: 20,
               )
             ),
-          ),
-          ..._getTasksfromDay(selectedDay).map((Task task) => ListTile(title: Text(task.title),),),
-        ]  
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => showDialog(
-          context: context, 
-          builder: (context) => AlertDialog(
-            title: const Text("Add Task"),
-            content: TextFormField(
-              controller: _taskController,
+          ), */
+
+          Row(
+              children: [
+                //to- do text
+                Container(
+                  margin: EdgeInsets.only(left: 345.0),
+                  child: const Text('To-Do:',
+                    style: TextStyle(
+                      color: Color(0xffcebb9c),
+                      fontSize: 20,
+                    )
+                  ),
+                ),
+
+                // '+' button
+                Container (
+                  margin: const EdgeInsets.only(left: 260.0),
+                  child: TextButton(
+                    onPressed: () => showDialog(
+                      context: context, 
+                      builder: (context) => AlertDialog(
+                        title: const Text('Add Task'),
+                        content: TextFormField(
+                          controller: _taskController,
+                        ),
+                        actions: [
+                          TextButton(
+                            child: const Text("Add"),
+                            onPressed: () {
+                              if(_taskController.text.isEmpty) {
+
+                              }
+                              else {
+                                if(selectedTasks[selectedDay] != null) {
+                                  selectedTasks[selectedDay]?.add(
+                                    Task(title: _taskController.text)
+                                  );
+                                }
+                                else {
+                                  selectedTasks[selectedDay] = [
+                                    Task(title: _taskController.text)
+                                  ];
+                                }
+
+                                Navigator.pop(context);
+                                _taskController.clear();
+                                setState(() {});
+                                return;
+                              }
+                            }
+                          )
+                        ]
+                      )), 
+                    child: const Icon(Icons.add),
+                    )
+                )
+              ],
             ),
-            actions: [
-              TextButton(
-                child: const Text("Add"),
-                onPressed: () {
-                  if(_taskController.text.isEmpty) {
-            
-                  }
-                  else {
-                    if(selectedTasks[selectedDay] != null) {
-                      selectedTasks[selectedDay]?.add(
-                        Task(title: _taskController.text),
-                      );
-                    }
-                    else {
-                      selectedTasks[selectedDay] = [
-                        Task(title: _taskController.text)
-                      ];
-                    }
-                    
-                  }
-                  Navigator.pop(context);
-                  _taskController.clear();
-                  setState(() {});
-                  return;
-                }
-                
-              )
-            ]
-          )),
-        child: const Icon(Icons.add),
-        ),
+              
+
+
+          ..._getTasksfromDay(selectedDay).map((Task task) => ListTile(title: Text(task.title),),),  
+        ]
+      ),
     );
   }
 }
