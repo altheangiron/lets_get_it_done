@@ -88,78 +88,79 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           const SizedBox(
             height: 10,
-          ),
-          
-          /*Container (
-            child: const Text('To-Do:',
-            style: TextStyle(
-              color: Color(0xffcebb9c),
-              fontSize: 20,
-              )
-            ),
-          ), */
+          ),      
 
-          Row(
-              children: [
-                //to- do text
-                Container(
-                  margin: EdgeInsets.only(left: 345.0),
-                  child: const Text('To-Do:',
-                    style: TextStyle(
-                      color: Color(0xffcebb9c),
-                      fontSize: 20,
+          Container(
+            child: Row(
+            children: <Widget> [
+
+              const Spacer(flex: 9),
+
+              // to-do text
+              Container(
+                margin: const EdgeInsets.only(left: 59.0),
+                child: const Center(        
+                  child: Text('To-Do:',
+                  style: TextStyle(
+                    color: Color(0xffcebb9c),
+                    fontSize: 20,
                     )
                   ),
                 ),
+              ),
+                
+              const Spacer(flex: 8),
 
-                // '+' button
-                Container (
-                  margin: const EdgeInsets.only(left: 260.0),
-                  child: TextButton(
-                    onPressed: () => showDialog(
-                      context: context, 
-                      builder: (context) => AlertDialog(
-                        title: const Text('Add Task'),
-                        content: TextFormField(
-                          controller: _taskController,
-                        ),
-                        actions: [
-                          TextButton(
-                            child: const Text("Add"),
-                            onPressed: () {
-                              if(_taskController.text.isEmpty) {
-
+              // '+'/add task button
+              Container(
+                margin: const EdgeInsets.only(right: 4.0),
+                child: TextButton(
+                  onPressed: () => showDialog(
+                    context: context, 
+                    builder: (context) => AlertDialog(
+                      title: const Text('Add Task'),
+                      content: TextFormField(
+                        controller: _taskController,
+                      ),
+                      actions: [
+                        TextButton(
+                          child: const Text("Add"),
+                          onPressed: () {
+                            if(_taskController.text.isEmpty) {
+                          
+                            }
+                            else {
+                              if(selectedTasks[selectedDay] != null) {
+                                selectedTasks[selectedDay]?.add(
+                                  Task(title: _taskController.text)
+                                );
                               }
                               else {
-                                if(selectedTasks[selectedDay] != null) {
-                                  selectedTasks[selectedDay]?.add(
-                                    Task(title: _taskController.text)
-                                  );
-                                }
-                                else {
-                                  selectedTasks[selectedDay] = [
-                                    Task(title: _taskController.text)
-                                  ];
-                                }
-
-                                Navigator.pop(context);
-                                _taskController.clear();
-                                setState(() {});
-                                return;
+                                selectedTasks[selectedDay] = [
+                                  Task(title: _taskController.text)
+                                ];
                               }
+                          
+                            Navigator.pop(context);
+                            _taskController.clear();
+                            setState(() {});
+                            return;
                             }
-                          )
-                        ]
-                      )), 
+                          }
+                        )
+                      ]
+                    )), 
                     child: const Icon(Icons.add),
-                    )
-                )
-              ],
-            ),
+                ),
+              ),
               
+              const Spacer(),
+            ],
+          ),
+        ),
 
+          ..._getTasksfromDay(selectedDay).map((Task task) => ListTile(title: Text(task.title),),), 
 
-          ..._getTasksfromDay(selectedDay).map((Task task) => ListTile(title: Text(task.title),),),  
         ]
       ),
     );
