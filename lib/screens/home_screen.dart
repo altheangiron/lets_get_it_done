@@ -118,16 +118,39 @@ class _HomeScreenState extends State<HomeScreen> {
                   onPressed: () => showDialog(
                     context: context, 
                     builder: (context) => AlertDialog(
-                      title: const Text('Add Task'),
-                      content: TextFormField(
-                        controller: _taskController,
+                      title: const Center(
+                        child: Text('Add Task', 
+                          style: TextStyle(
+                          color: Color(0xffcebb9c),
+                        )),
                       ),
-                      actions: [
+                      content: SizedBox(
+                        width: 50,
+                        child: TextFormField(
+                          controller: _taskController,
+                          minLines: 5,
+                          maxLines: 5,
+                          decoration: const InputDecoration(
+                            contentPadding: EdgeInsets.only(left: 10, top: 19),
+                            border: OutlineInputBorder(),
+                            hintText: 'let\'s get this task done..',
+                          ),
+                        ),
+                      ),              
+                       actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            _taskController.clear();
+                          }, 
+                          child: const Text('Cancel'),
+                        ),
                         TextButton(
                           child: const Text("Add"),
                           onPressed: () {
                             if(_taskController.text.isEmpty) {
-                          
+                              Navigator.pop(context);
+                              _taskController.clear();
                             }
                             else {
                               if(selectedTasks[selectedDay] != null) {
@@ -150,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         )
                       ]
                     )), 
-                    child: const Icon(Icons.add),
+                    child: const Icon(Icons.add, color: Colors.black),
                 ),
               ),
               
