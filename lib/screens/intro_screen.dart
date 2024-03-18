@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lets_get_it_done/screens/home_screen.dart';
 
+/* -- Introduction Screen --
+  This screen shows for 2 seconds before loading the main screen */ 
+
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
   
   @override
-  State<IntroScreen> createState() => _SplashScreenState();
+  State<IntroScreen> createState() => _IntroScreenState();
 }
 
-class _SplashScreenState extends State<IntroScreen> 
+class _IntroScreenState extends State<IntroScreen> 
     with SingleTickerProviderStateMixin{
 
   // runs the splash screen immediately

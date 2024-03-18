@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lets_get_it_done/screens/home_screen.dart';
 import 'package:lets_get_it_done/screens/intro_screen.dart';
 
 void main() {
@@ -10,10 +11,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'lets get it done',
       debugShowCheckedModeBanner: false,
-      home: IntroScreen(),
+      // routing 
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const IntroScreen(),
+        /* HomeScreen() includes Add Task + Edit Task Alert Dialogs (two other "screens") */
+        '/home': (context) => const HomeScreen(),
+      },
     );
   }
 }
