@@ -206,70 +206,82 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-          
+              
             ..._getTasksfromDay(selectedDay).map((Task task) => Container(
-                  margin: const EdgeInsets.symmetric(vertical: 8.0),
-                  width: 800,
-                  child: ListTile(
-                    title: Text(task.title),
-                    shape: RoundedRectangleBorder(
-                      side: const BorderSide(
-                        color: Colors.black,),
-                      borderRadius: BorderRadius.circular(8.0),
-                      ),
-                    /* onTap of Task ->
-                      'Edit Task' Alert Dialog */
-                    onTap: () => showDialog(
-                      context: context, 
-                      builder: (context) => AlertDialog(
-                        title: const Center(
-                          child: Text('Edit Task', 
-                          style: TextStyle(
-                            color: Color(0xffcebb9c),
-                          ),)
+                    margin: const EdgeInsets.symmetric(vertical: 8.0),
+                    width: 800,
+                    child: ListTile(
+                      title: Text(task.title),
+                      shape: RoundedRectangleBorder(
+                        side: const BorderSide(
+                          color: Colors.black,),
+                        borderRadius: BorderRadius.circular(8.0),
                         ),
-                        content: SizedBox(
-                          width: 50,
-                          child: TextFormField(
-                            minLines: 5,
-                            maxLines: 5,
-                            initialValue: task.title,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              hintText: 'let\'s get this task done..'
+                      /* onTap of Task ->
+                        'Edit Task' Alert Dialog */
+                      onTap: () => showDialog(
+                        context: context, 
+                        builder: (context) => AlertDialog(
+                          title: const Center(
+                            child: Text('Edit Task', 
+                            style: TextStyle(
+                              color: Color(0xffcebb9c),
+                            ),)
+                          ),
+                          content: SizedBox(
+                            width: 50,
+                            child: TextFormField(
+                              minLines: 5,
+                              maxLines: 5,
+                              initialValue: task.title,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: 'let\'s get this task done..'
+                              ),
                             ),
                           ),
-                        ),
-                        actions: [
-                          Row(
-                            children: <Widget> [
-
-                              // allows user to delete task
+                          actions: [
+                            Row(
+                              children: <Widget> [
+              
+                                // allows user to delete task
+                                ElevatedButton(
+                                  onPressed: () {}, 
+                                  child: const Text('Delete',
+                                    style: TextStyle(
+                                      color: Color(0xfff07f90),
+                                    ),
+                                  )
+                                ),
+              
+                              const Spacer(flex: 2),
+              
+                              // allows user to save changes to task
                               ElevatedButton(
                                 onPressed: () {}, 
-                                child: const Text('Delete',
+                                child: const Text('Save Changes', 
                                   style: TextStyle(
-                                    color: Color(0xfff07f90),
+                                    color: Color(0xff8ee6ac),
                                   ),
-                                )
-                              ),
-
-                            const Spacer(flex: 2),
-
-                            // allows user to save changes to task
-                            ElevatedButton(
-                              onPressed: () {}, 
-                              child: const Text('Save Changes', 
-                                style: TextStyle(
-                                  color: Color(0xff8ee6ac),
                                 ),
-                              ),
-                            )
-                          ])
-                        ],
+                              )
+                            ])
+                          ],
+                          ),
                         ),
-                      )
-                  ),),),
+                      trailing: Checkbox(
+                        value: task.value, 
+                        onChanged: (value) {
+                          setState(() {
+                            final newValue = !task.value;
+                            task.value = newValue;
+                          });
+                        },
+                        activeColor: const Color(0xffcebb9c),
+                        
+                       ),
+                    ),
+            ),),
             
             ]
           ),
