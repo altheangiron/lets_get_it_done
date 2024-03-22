@@ -246,7 +246,11 @@ class _HomeScreenState extends State<HomeScreen> {
               
                                 // allows user to delete task
                                 ElevatedButton(
-                                  onPressed: () {}, 
+                                  onPressed: () {
+                                    selectedTasks[selectedDay]?.remove(task);
+                                    setState(() {});
+                                    Navigator.pop(context);
+                                  }, 
                                   child: const Text('Delete',
                                     style: TextStyle(
                                       color: Color(0xfff07f90),
