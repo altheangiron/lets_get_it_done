@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const IntroScreen(),
-        /* HomeScreen() includes Add Task + Edit Task Alert Dialogs (two other "screens") */
+        /* HomeScreen() includes Add Task + Delete Task Alert Dialogs (two other "screens") */
         '/home': (context) => const HomeScreen(),
       },
     );

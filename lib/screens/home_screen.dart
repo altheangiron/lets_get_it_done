@@ -1,13 +1,15 @@
+import 'dart:js_util';
+
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:lets_get_it_done/task.dart';
 
-/* -- Home Screen + Add Task Page + Edit Task Page --
+/* -- Home Screen + Add Task Page + Delete Task Page --
   This screen:
   + shows the Weekly Calendar
   + allows user to enter their task under the respective date */
 
-/* The 'Add Task' & 'Edit Task' Pages are AlertDialog Widgets but renders a screen */
+/* The 'Add Task' & 'Delete Task' Pages are AlertDialog Widgets but renders a screen */
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -223,7 +225,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         context: context, 
                         builder: (context) => AlertDialog(
                           title: const Center(
-                            child: Text('Edit Task', 
+                            child: Text('Delete Task', 
                             style: TextStyle(
                               color: Color(0xffcebb9c),
                             ),)
@@ -240,12 +242,22 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                           ),
-                          actions: [
-                            Row(
-                              children: <Widget> [
-              
-                                // allows user to delete task
-                                ElevatedButton(
+                          actions: <Widget>[
+                          
+                              // allows user to cancel deleting task
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                }, 
+                                child: const Text('Cancel', 
+                                  style: TextStyle(
+                                    color: Color(0xffcebb9c),
+                                  ),
+                                ),
+                              ),
+
+                              // allows user to delete task
+                              ElevatedButton(
                                   onPressed: () {
                                     selectedTasks[selectedDay]?.remove(task);
                                     setState(() {});
@@ -256,21 +268,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       color: Color(0xfff07f90),
                                     ),
                                   )
-                                ),
-              
-                              const Spacer(flex: 2),
-              
-                              // allows user to save changes to task
-                              ElevatedButton(
-                                onPressed: () {}, 
-                                child: const Text('Save Changes', 
-                                  style: TextStyle(
-                                    color: Color(0xff8ee6ac),
-                                  ),
-                                ),
-                              )
-                            ])
-                          ],
+                                )
+                            ]
                           ),
                         ),
                       trailing: Checkbox(
@@ -282,7 +281,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           });
                         },
                         activeColor: const Color(0xffcebb9c),
-                        
                        ),
                     ),
             ),),
