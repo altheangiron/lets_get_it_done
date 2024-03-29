@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:lets_get_it_done/task.dart';
 
+/* for file support:
+    import 'package:path_provider/path_provider.dart';
+    import 'dart:io'; */
+
 /* -- Home Screen + Add Task Page + Delete Task Page --
   This screen:
   + shows the Weekly Calendar
@@ -47,6 +51,17 @@ class _HomeScreenState extends State<HomeScreen> {
        focusedDay = focusDay;
       });
   }
+
+  /* I am using the chrome - web to test my app, 
+     path_provider is incompatible with the web 
+     
+     the following will provide file support for iOS, Android, & MacOS */
+
+  /*_write(String text) async {
+    final Directory directory = await getApplicationCacheDirectory();
+    final File file = File('${directory.path}/my_file.txt');
+    await file.writeAsString(text);
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -181,6 +196,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     selectedTasks[selectedDay]?.add(
                                       Task(title: _taskController.text)
                                     );
+                                    /*_write(_taskController.text);*/
                                   }
                                   else {
                                     selectedTasks[selectedDay] = [
