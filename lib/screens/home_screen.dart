@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:lets_get_it_done/task.dart';
-
-/* for file support:
-    import 'package:path_provider/path_provider.dart';
-    import 'dart:io'; */
+import 'package:shared_preferences/shared_preferences.dart';
 
 /* -- Home Screen + Add Task Page + Delete Task Page --
   This screen:
@@ -29,9 +26,29 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final TextEditingController _taskController = TextEditingController();
 
+  /* shared_preferences - saves data locally */
+
+  saveTask(String task) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('task', task);
+  }
+
+  getSavedTask() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    final taskValue = prefs.getString('task');
+    return taskValue;
+  }
+
+  removeSavedTask() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('task');
+  }
+
   @override
   void initState() {
     selectedTasks = {};
+    getSavedTask();
     super.initState();
   }
 
@@ -51,17 +68,6 @@ class _HomeScreenState extends State<HomeScreen> {
        focusedDay = focusDay;
       });
   }
-
-  /* I am using the chrome - web to test my app, 
-     path_provider is incompatible with the web 
-     
-     the following will provide file support for iOS, Android, & MacOS */
-
-  /*_write(String text) async {
-    final Directory directory = await getApplicationCacheDirectory();
-    final File file = File('${directory.path}/my_file.txt');
-    await file.writeAsString(text);
-  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -196,7 +202,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     selectedTasks[selectedDay]?.add(
                                       Task(title: _taskController.text)
                                     );
-                                    /*_write(_taskController.text);*/
+                                    saveTask(_taskController.text);
                                   }
                                   else {
                                     selectedTasks[selectedDay] = [
@@ -275,6 +281,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   onPressed: () {
                                     selectedTasks[selectedDay]?.remove(task);
                                     setState(() {});
+                                    removeSavedTask();
                                     Navigator.pop(context);
                                   }, 
                                   child: const Text('Delete',
