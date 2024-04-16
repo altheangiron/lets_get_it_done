@@ -40,6 +40,19 @@ class _HomeScreenState extends State<HomeScreen> {
     return taskBorder;
   }
 
+  Color _getBorderColor(int? borderColorValue) {
+  switch (borderColorValue) {
+    case 1:
+      return const Color(0xff9ee2e6);
+    case 2:
+      return const Color(0xfff7bae7);
+    case 3:
+      return const Color(0xffcbafe3);
+    default:
+      return Colors.black;
+  }
+}
+
   void _showAddTaskDialog() {
   showDialog(
     context: context,
@@ -123,23 +136,22 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  if(_taskController.text.isEmpty) {
+                  /*if(_taskController.text.isEmpty) {
                     Navigator.pop(context);
                     _taskController.clear();
-                  }
-                  else {
-                    if(selectedTasks[selectedDay] != null) {
-                      selectedTasks[selectedDay]?.add(
-                      Task(title: _taskController.text)
+                  }*/
+                  if(_taskController.text.isNotEmpty) {
+                    final newTask = Task(
+                      title: _taskController.text,
+                      borderColorValue: borderColorValue,
                       );
-                      saveTask(_taskController.text);
+                  if(selectedTasks[selectedDay] != null) {
+                      selectedTasks[selectedDay]?.add(newTask);
                     }
                     else {
-                      selectedTasks[selectedDay] = [
-                        Task(title: _taskController.text)
-                      ];
+                      selectedTasks[selectedDay] = [newTask];
                     }
-                                
+                    saveTask(_taskController.text);   
                     Navigator.pop(context);
                     _taskController.clear();
                     setState(() {});
@@ -304,7 +316,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       title: Text(task.title),
                       shape: RoundedRectangleBorder(
                         side: BorderSide(
-                          color: taskBorderColor(),),
+                          color: _getBorderColor(task.borderColorValue),),
                         borderRadius: BorderRadius.circular(8.0),
                         ),
                       /* onTap of Task ->
