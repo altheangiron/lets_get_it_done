@@ -1,6 +1,3 @@
-/* CUBIT - this class creates the task object:
-    + saves state between Presentation Layer (UI) and Business Logic Layer */
-
 class Task {
   String title;
   bool value;

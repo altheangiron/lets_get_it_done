@@ -19,6 +19,143 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
+  int? borderColorValue = 0;
+
+  dynamic taskBorder;
+
+  Color taskBorderColor() {
+    
+    if(borderColorValue == 1) {
+      taskBorder = const Color(0xff9ee2e6);
+    }
+    else if(borderColorValue == 2) {
+      taskBorder = const Color(0xfff7bae7);
+    }
+    else if(borderColorValue == 3) {
+      taskBorder = const Color(0xffcbafe3);
+    }
+    else {
+      taskBorder = Colors.black;
+    }
+    return taskBorder;
+  }
+
+  void _showAddTaskDialog() {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return StatefulBuilder(
+        builder: (BuildContext context, StateSetter setStateDialog) {
+          return AlertDialog(
+            title: const Center(
+              child: Text('Add Task',
+                style: TextStyle(color: Color(0xffcebb9c)),
+              )
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const Row(
+                  children: [
+                    Text('Select Type:', 
+                      style: TextStyle(color: Color(0xffcebb9c)),
+                    ),
+
+                    Spacer(flex: 7),
+                  ],
+                ),
+                RadioListTile<int>(
+                  title: const Text('School', style: TextStyle(color: Color(0xff9ee2e6))),
+                  value: 1,
+                  groupValue: borderColorValue,
+                  onChanged: (int? value) {
+                    setStateDialog(() {
+                      borderColorValue = value;
+                    });
+                  },
+                ),
+                RadioListTile<int>(
+                  title: const Text('Work', style: TextStyle(color: Color(0xfff7bae7))),
+                  value: 2,
+                  groupValue: borderColorValue,
+                  onChanged: (int? value) {
+                    setStateDialog(() {
+                      borderColorValue = value;
+                    });
+                  },
+                ),
+                RadioListTile<int>(
+                  title: const Text('General', style: TextStyle(color: Color(0xffcbafe3))),
+                  value: 3,
+                  groupValue: borderColorValue,
+                  onChanged: (int? value) {
+                    setStateDialog(() {
+                      borderColorValue = value;
+                    });
+                  },
+                ),
+                const SizedBox(height: 10),
+                SizedBox(
+                  width: 250,
+                  child: TextField(
+                    controller: _taskController,
+                    minLines: 5,
+                    maxLines: 5,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: taskBorderColor(),
+                        ),
+                      ),
+                      hintText: "Let's get this task done...",
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            actions: <Widget>[
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  _taskController.clear();
+                },
+                child: const Text('Cancel', style: TextStyle(color: Color(0xffcebb9c))),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  if(_taskController.text.isEmpty) {
+                    Navigator.pop(context);
+                    _taskController.clear();
+                  }
+                  else {
+                    if(selectedTasks[selectedDay] != null) {
+                      selectedTasks[selectedDay]?.add(
+                      Task(title: _taskController.text)
+                      );
+                      saveTask(_taskController.text);
+                    }
+                    else {
+                      selectedTasks[selectedDay] = [
+                        Task(title: _taskController.text)
+                      ];
+                    }
+                                
+                    Navigator.pop(context);
+                    _taskController.clear();
+                    setState(() {});
+                    return;
+                  }
+                },
+                child: const Text("Add", style: TextStyle(color: Color(0xffcebb9c))),
+              )
+            ],
+          );
+        }
+      );
+    }
+  );
+}
+
   late Map<DateTime, List<Task>> selectedTasks;
 
   DateTime selectedDay = DateTime.now();
@@ -149,76 +286,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Container(
                     margin: const EdgeInsets.only(right: 4.0),
                     child: TextButton(
-                      onPressed: () => showDialog(
-                        context: context, 
-                        builder: (context) => AlertDialog(
-                          title: const Center(
-                            child: Text('Add Task', 
-                              style: TextStyle(
-                              color: Color(0xffcebb9c),
-                            )),
-                          ),
-                          content: SizedBox(
-                            width: 50,
-                            child: TextField(
-                              controller: _taskController,
-                              minLines: 5,
-                              maxLines: 5,
-                              decoration: const InputDecoration(
-                                contentPadding: EdgeInsets.only(left: 10, top: 19),
-                                border: OutlineInputBorder(),
-                                hintText: 'let\'s get this task done..',
-                              ),
-                            ),
-                          ),              
-                          actions: <Widget>[
-                
-                            // routes user back to the home screen from 'Add Task' screen
-                            ElevatedButton(
-                              onPressed: () {
-                                Navigator.pop(context); 
-                                _taskController.clear();
-                              }, 
-                              child: const Text('Cancel', 
-                                style: TextStyle(
-                                  color: Color(0xffcebb9c),
-                                ),),
-                            ),
-                
-                            /* allows user to add task under respective date 
-                              + back to the home screen */
-                            ElevatedButton(
-                              child: const Text("Add", 
-                                style: TextStyle(
-                                  color: Color(0xffcebb9c),
-                                ),),
-                              onPressed: () {
-                                if(_taskController.text.isEmpty) {
-                                  Navigator.pop(context);
-                                  _taskController.clear();
-                                }
-                                else {
-                                  if(selectedTasks[selectedDay] != null) {
-                                    selectedTasks[selectedDay]?.add(
-                                      Task(title: _taskController.text)
-                                    );
-                                    saveTask(_taskController.text);
-                                  }
-                                  else {
-                                    selectedTasks[selectedDay] = [
-                                      Task(title: _taskController.text)
-                                    ];
-                                  }
-                                
-                                Navigator.pop(context);
-                                _taskController.clear();
-                                setState(() {});
-                                return;
-                                }
-                              }
-                            )
-                          ]
-                        )), 
+                      onPressed: _showAddTaskDialog,
                         child: const Icon(Icons.add, color: Colors.black),
                     ),
                   ),
@@ -235,8 +303,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: ListTile(
                       title: Text(task.title),
                       shape: RoundedRectangleBorder(
-                        side: const BorderSide(
-                          color: Colors.black,),
+                        side: BorderSide(
+                          color: taskBorderColor(),),
                         borderRadius: BorderRadius.circular(8.0),
                         ),
                       /* onTap of Task ->
@@ -311,7 +379,5 @@ class _HomeScreenState extends State<HomeScreen> {
         ]
       ),
     );
-
-
   }
 }
